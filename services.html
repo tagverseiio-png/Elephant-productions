@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elephant Productions — Creative Communications Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2>Drop us a<br>line.</h2>
+    <div class="form-field">
+      <label>Name *</label>
+      <input type="text" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Email *</label>
+      <input type="email" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Phone Number *</label>
+      <input type="tel" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Your Message *</label>
+      <textarea rows="4"></textarea>
+    </div>
+    <button class="submit-btn">
+      <span class="arrow-circle">↗</span>
+      SEND MESSAGE
+    </button>
+    <div class="modal-email"><a href="mailto:info@azionepr.com">info@azionepr.com</a></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav" class="dark">
+  <div class="nav-left">
+    <a href="work.html">Work</a>
+    <a href="services.html">Services</a>
+    <a href="influencers.html">Influencer Collaborations</a>
+  </div>
+  <a href="index.html" class="nav-logo" style="letter-spacing: 0.1em; font-size: max(14px, 1vw);">ELEPHANT PRODUCTIONS</a>
+  <div class="nav-right">
+    <a href="about.html">About</a>
+    <a href="https://instagram.com/azionepr" target="_blank">Instagram</a>
+    <a href="#contact" onclick="openModal(); return false;">Contact</a>
+  </div>
+</nav>
+
+<!-- SERVICES HEADER -->
+<section id="services-header">
+  <div class="about-header">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(100px, 20vw, 300px); color: var(--white); line-height: 0.9; font-weight: 400;">Services</h2>
+  </div>
+</section>
+
+<!-- SERVICES PAGE CONTENT -->
+<section id="services-page-content">
+  <div class="services-page-wrapper">
+    <!-- ROW 1 -->
+    <div class="sp-row">
+      <div class="sp-text-block sp-blue reveal">
+        <div>
+          <h3 class="sp-title">PR &amp; Comms</h3>
+          <p class="sp-desc">We foster authentic connections. We build relevance, buzz and authority. With deep, longstanding relationships, our team acts natively on your behalf to strategically position your product perfectly with the right audiences.</p>
+        </div>
+        <div class="sp-tags">
+          <span class="sp-tag-item">Public Relations</span>
+          <span class="sp-tag-item">Media Relations</span>
+          <span class="sp-tag-item">Corporate Comms</span>
+          <span class="sp-tag-item">Product Placement</span>
+          <span class="sp-tag-item">Crisis Communications</span>
+          <span class="sp-tag-item">Media Training</span>
+        </div>
+      </div>
+      <div class="sp-img-block reveal" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80');"></div>
+    </div>
+    
+    <!-- ROW 2 (Image Left, Text Right via HTML ordering) -->
+    <div class="sp-row">
+      <div class="sp-img-block reveal" style="background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80');"></div>
+      <div class="sp-text-block sp-dark reveal">
+        <div>
+          <h3 class="sp-title">Influencer &amp; VIP<br>Programming</h3>
+          <p class="sp-desc">We build influencer foundations that will pay off for the lifespan of a campaign. From initial seeding programs, experiential excursions, and beyond. In addition to broad scale seeding, we design bespoke approaches to activate specialized communities.</p>
+        </div>
+        <div class="sp-tags">
+          <span class="sp-tag-item">Influencer Strategy</span>
+          <span class="sp-tag-item">VIP Seeding</span>
+          <span class="sp-tag-item">Micro-Influencers</span>
+          <span class="sp-tag-item">Key Opinion Leaders</span>
+          <span class="sp-tag-item">Talent Management</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 3 -->
+    <div class="sp-row">
+      <div class="sp-text-block sp-teal reveal">
+        <div>
+          <h3 class="sp-title">Talent<br>Partnerships</h3>
+          <p class="sp-desc">Connecting our brands directly with cultural leaders, we orchestrate high-level partnerships and celebrity ambassadorships. Turning organic adoration into meaningful alliances.</p>
+        </div>
+        <div class="sp-tags">
+          <span class="sp-tag-item">Ambassadorships</span>
+          <span class="sp-tag-item">Celebrity Seeding</span>
+          <span class="sp-tag-item">Brand Collaborations</span>
+          <span class="sp-tag-item">Spokesperson Procurement</span>
+        </div>
+      </div>
+      <div class="sp-img-block reveal" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80');"></div>
+    </div>
+
+    <!-- ROW 4 (Image Left, Text Right) -->
+    <div class="sp-row">
+      <div class="sp-img-block reveal" style="background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80');"></div>
+      <div class="sp-text-block sp-green reveal">
+        <div>
+          <h3 class="sp-title">Event<br>Management</h3>
+          <p class="sp-desc">We execute show-stopping events that bring a brand's narrative to life at every touchpoint. No detail goes unseen; our comprehensive event management team is involved hands on in every physical activation step of the process, ensuring perfectly seamless experiences.</p>
+        </div>
+        <div class="sp-tags">
+          <span class="sp-tag-item">Experiential Strategy</span>
+          <span class="sp-tag-item">Brand Activations</span>
+          <span class="sp-tag-item">Press Dinners</span>
+          <span class="sp-tag-item">Deskside Tours</span>
+          <span class="sp-tag-item">Pop-up Design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADDITIVE SERVICES -->
+<section class="additive-services-page reveal">
+  <h2 class="additive-pg-header">Additive Services</h2>
+  <div class="add-pg-list">
+    <div class="add-pg-item">Affiliate Management / Performance PR</div>
+    <div class="add-pg-item">Pre-Launch Brand Strategy and Positioning</div>
+    <div class="add-pg-item">Affiliate / Performance Digital Marketing</div>
+    <div class="add-pg-item">Founder and Executive Media Training</div>
+    <div class="add-pg-item">Out of Home - Digital Campaign Development and Management</div>
+    <div class="add-pg-item">Amazon and Retail Strategy Support</div>
+    <div class="add-pg-item">Brand Strategy</div>
+    <div class="add-pg-item">Social Media Management</div>
+    <div class="add-pg-item">Fractional Marketing Support</div>
+    <div class="add-pg-item">Event Production</div>
+    <div class="add-pg-item">Merch & Gifting Production</div>
+    <div class="add-pg-item">Creative Asset Development</div>
+  </div>
+</section>
+
+<!-- CONTACT / CTA -->
+<section id="contact">
+  <div class="cta-block reveal">
+    <h2>
+      Interested in our work?<br>
+      Let's talk. 
+      <a href="#" class="cta-link-inline" onclick="openModal(); return false;">
+        <span class="arrow-circle black-bg">↗</span>
+        CONTACT US
+      </a>
+    </h2>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-wordmark">ELEPHANT PRODUCTIONS</span>
+  <div class="footer-bottom">
+    <span>© Elephant Productions 2026</span>
+    <div class="footer-links">
+      <a href="work.html">Work</a>
+      <a href="services.html">Services</a>
+      <a href="influencers.html">Influencers</a>
+      <a href="about.html">About</a>
+      <a href="https://instagram.com/azionepr" target="_blank">Instagram</a>
+      <a href="mailto:info@azionepr.com">info@azionepr.com</a>
+      <a href="#contact" onclick="openModal(); return false;">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

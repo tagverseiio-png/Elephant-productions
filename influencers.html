@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elephant Productions — Creative Communications Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2>Drop us a<br>line.</h2>
+    <div class="form-field">
+      <label>Name *</label>
+      <input type="text" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Email *</label>
+      <input type="email" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Phone Number *</label>
+      <input type="tel" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Your Message *</label>
+      <textarea rows="4"></textarea>
+    </div>
+    <button class="submit-btn">
+      <span class="arrow-circle">↗</span>
+      SEND MESSAGE
+    </button>
+    <div class="modal-email"><a href="mailto:info@azionepr.com">info@azionepr.com</a></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav" class="dark">
+  <div class="nav-left">
+    <a href="work.html">Work</a>
+    <a href="services.html">Services</a>
+    <a href="influencers.html">Influencer Collaborations</a>
+  </div>
+  <a href="index.html" class="nav-logo" style="letter-spacing: 0.1em; font-size: max(14px, 1vw);">ELEPHANT PRODUCTIONS</a>
+  <div class="nav-right">
+    <a href="about.html">About</a>
+    <a href="https://instagram.com/azionepr" target="_blank">Instagram</a>
+    <a href="#contact" onclick="openModal(); return false;">Contact</a>
+  </div>
+</nav>
+
+<!-- INFLUENCERS CONTENT -->
+<section id="influencers" class="influencer-page-wrapper">
+  <div class="influencers-header reveal">
+    <h2>Influencer<br>Collaborations</h2>
+    <p>We fuel brand awareness, boost conversion, and create tangible ROI by fostering authentic partnerships between influencers and brands. Because influencers are changing the way we interact with brands, you might trust a post from your favorite creator more than a celebrity commercial.</p>
+  </div>
+  <div class="influencer-filter">
+    <button class="filter-btn active">ALL</button>
+    <button class="filter-btn">FASHION</button>
+    <button class="filter-btn">BEAUTY</button>
+    <button class="filter-btn">HOME</button>
+    <button class="filter-btn">LIFESTYLE</button>
+    <button class="filter-btn">WELLNESS</button>
+    <button class="filter-btn">ACTIVEWEAR</button>
+    <button class="filter-btn">FOOTWEAR</button>
+    <button class="filter-btn">FOOD & BEVERAGE</button>
+  </div>
+  <div class="influencer-grid">
+    <!-- COL 1 (Or staggered items) -->
+    <div class="inf-card reveal">
+      <div class="inf-card-wrapper">
+        <img class="inf-card-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80" alt="Kiehl's">
+      </div>
+      <div class="inf-card-info">
+        <span class="inf-brand-label">BEAUTY</span>
+        <h3>KIEHL'S Acne Liquid Patch Launch</h3>
+      </div>
+    </div>
+    <div class="inf-card reveal">
+      <div class="inf-card-wrapper">
+        <img class="inf-card-img" src="https://images.unsplash.com/photo-1596462502278-27bf84033058?auto=format&fit=crop&q=80" alt="Farmacy">
+      </div>
+      <div class="inf-card-info">
+        <span class="inf-brand-label">BEAUTY</span>
+        <h3>Farmacy</h3>
+      </div>
+    </div>
+    <div class="inf-card reveal">
+      <div class="inf-card-wrapper">
+        <img class="inf-card-img" src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80" alt="TravisMathew">
+      </div>
+      <div class="inf-card-info">
+        <span class="inf-brand-label">FASHION / WELLNESS</span>
+        <h3>TravisMathew Women's Ojai Content Trip</h3>
+      </div>
+    </div>
+    <div class="inf-card reveal">
+      <div class="inf-card-wrapper">
+        <img class="inf-card-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80" alt="Sundays">
+      </div>
+      <div class="inf-card-info">
+        <span class="inf-brand-label">LIFESTYLE / WELLNESS</span>
+        <h3>Sundays Furniture Ambassador Program</h3>
+      </div>
+    </div>
+    <div class="inf-card reveal">
+      <div class="inf-card-wrapper">
+        <img class="inf-card-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80" alt="ALDO">
+      </div>
+      <div class="inf-card-info">
+        <span class="inf-brand-label">FOOTWEAR</span>
+        <h3>ALDO VIP Dressing</h3>
+      </div>
+    </div>
+    <div class="inf-card reveal">
+      <div class="inf-card-wrapper">
+        <img class="inf-card-img" src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80" alt="REI">
+      </div>
+      <div class="inf-card-info">
+        <span class="inf-brand-label">PR</span>
+        <h3>REI Influencer Programming</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / CTA -->
+<section id="contact">
+  <div class="cta-block reveal">
+    <h2>
+      Interested in our work?<br>
+      Let's talk. 
+      <a href="#" class="cta-link-inline" onclick="openModal(); return false;">
+        <span class="arrow-circle black-bg">↗</span>
+        CONTACT US
+      </a>
+    </h2>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-wordmark">ELEPHANT PRODUCTIONS</span>
+  <div class="footer-bottom">
+    <span>© Elephant Productions 2026</span>
+    <div class="footer-links">
+      <a href="work.html">Work</a>
+      <a href="services.html">Services</a>
+      <a href="influencers.html">Influencers</a>
+      <a href="about.html">About</a>
+      <a href="https://instagram.com/azionepr" target="_blank">Instagram</a>
+      <a href="mailto:info@azionepr.com">info@azionepr.com</a>
+      <a href="#contact" onclick="openModal(); return false;">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

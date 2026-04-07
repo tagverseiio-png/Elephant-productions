@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elephant Productions — Creative Communications Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2>Drop us a<br>line.</h2>
+    <div class="form-field">
+      <label>Name *</label>
+      <input type="text" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Email *</label>
+      <input type="email" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Phone Number *</label>
+      <input type="tel" placeholder="">
+    </div>
+    <div class="form-field">
+      <label>Your Message *</label>
+      <textarea rows="4"></textarea>
+    </div>
+    <button class="submit-btn">
+      <span class="arrow-circle">↗</span>
+      SEND MESSAGE
+    </button>
+    <div class="modal-email"><a href="mailto:info@azionepr.com">info@azionepr.com</a></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav" class="dark">
+  <div class="nav-left">
+    <a href="work.html">Work</a>
+    <a href="services.html">Services</a>
+    <a href="influencers.html">Influencer Collaborations</a>
+  </div>
+  <a href="index.html" class="nav-logo" style="letter-spacing: 0.1em; font-size: max(14px, 1vw);">ELEPHANT PRODUCTIONS</a>
+  <div class="nav-right">
+    <a href="about.html">About</a>
+    <a href="https://instagram.com/azionepr" target="_blank">Instagram</a>
+    <a href="#contact" onclick="openModal(); return false;">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="background: center/cover url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80'); display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative;">
+  <div class="hero-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); z-index: 1;"></div>
+  
+  <div class="hero-center-group" style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding-top: 60px;">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(50px, 12vw, 150px); color: rgba(255,255,255,0.95); line-height: 0.8; letter-spacing: -0.02em; margin: 0; text-align: center;">ELEPHANT PRODUCTIONS</h1>
+    <p style="font-size: clamp(10px, 1.5vw, 13px); color: var(--white); margin: 20px 0 40px; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; font-weight: 500;">a full-funnel, creative communications agency based in ny & la.</p>
+    <a href="#home-grid" class="hero-scrolldown" style="display: flex; flex-direction: column; align-items: center; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--white); text-decoration: none; gap: 12px; transition: opacity 0.2s;">
+      SCROLL DOWN
+      <span class="arrow-down" style="width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center;">↓</span>
+    </a>
+  </div>
+
+  <div class="hero-ticker" style="width: 100%; background: transparent; border-top: 1px solid rgba(255,255,255,0.3); border-bottom: none; z-index: 2; padding: 16px 0;">
+    <div class="ticker-track" id="ticker" style="font-family: 'Playfair Display', serif; font-size: clamp(24px, 3.5vw, 42px); color: var(--white); text-transform: none; letter-spacing: normal;">
+      <span>Sweetgreen</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>HOKA</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Away</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>J. Crew</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>REI</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Fender</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Kosas</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Lacoste</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Vuori</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Caraway</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Sakara Life</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <!-- duplicate -->
+      <span>Sweetgreen</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>HOKA</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Away</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>J. Crew</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>REI</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Fender</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Kosas</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Lacoste</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Vuori</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Caraway</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+      <span>Sakara Life</span><span class="ticker-dot" style="margin: 0 20px; color:rgba(255,255,255,0.5)!important;">·</span>
+    </div>
+  </div>
+</section>
+
+<!-- BENTO GRID -->
+<section id="home-grid" style="padding: 12px 40px 80px; background: var(--white);">
+  <!-- CARD 1 -->
+  <div class="sp-row reveal" style="margin-bottom: 24px; gap: 24px;">
+    <div class="sp-img-block" style="background-image: url('https://images.unsplash.com/photo-1596462502278-27bf84033058?auto=format&fit=crop&q=80'); border-radius: 16px;"></div>
+    <div class="sp-text-block" style="background: #803117; padding: 60px 50px; border-radius: 16px; min-height: 500px;">
+      <div>
+        <h3 style="font-family: 'Playfair Display', serif; font-size: clamp(32px, 4vw, 56px); color: var(--white); line-height: 1.1; margin-bottom: 24px;">Infusing creative alchemy into today's brands</h3>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.8; max-width: 90%;">We increase brand visibility and awareness through thoughtful storytelling and distinct communications strategies. With an unmatched consumer understanding and a true cultural fingerprint, we create magic for brands by building their authority by and differentiated perspective in the market.</p>
+      </div>
+      <a href="services.html" style="font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); text-decoration: none; display: inline-flex; align-items: center; gap: 12px; margin-top: 40px;">
+        <span class="circle-icon" style="width: 24px; height: 24px; border-radius: 50%; background: var(--white); color: var(--black); display: flex; align-items: center; justify-content: center; font-size: 10px;">→</span>
+        OUR SERVICES
+      </a>
+    </div>
+  </div>
+  
+  <!-- CARD 2 -->
+  <div class="sp-row reveal" style="margin-bottom: 24px; gap: 24px;">
+    <div class="sp-text-block" style="background: #27402c; padding: 60px 50px; border-radius: 16px; min-height: 500px;">
+      <div>
+        <h3 style="font-family: 'Playfair Display', serif; font-size: clamp(32px, 4vw, 56px); color: var(--white); line-height: 1.1; margin-bottom: 24px;">Maximizing your orbit</h3>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.8; max-width: 90%;">We connect your brand with the right talent, VIPs, and influencers to ensure the relationship with your community is a powerful lever in the overall communications strategy. With our holistic approach, we cultivate genuine relationships, creating thoughtful and memorable moments and campaigns that build widespread awareness on social media and drive tangible engagement and consumer loyalty.</p>
+      </div>
+      <a href="influencers.html" style="font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); text-decoration: none; display: inline-flex; align-items: center; gap: 12px; margin-top: 40px;">
+        <span class="circle-icon" style="width: 24px; height: 24px; border-radius: 50%; background: var(--white); color: var(--black); display: flex; align-items: center; justify-content: center; font-size: 10px;">→</span>
+        INFLUENCER / VIP CARE
+      </a>
+    </div>
+    <div class="sp-img-block" style="background-image: url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80'); border-radius: 16px;"></div>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="sp-row reveal" style="margin-bottom: 24px; gap: 24px;">
+    <div class="sp-img-block" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80'); border-radius: 16px;"></div>
+    <div class="sp-text-block" style="background: #0f3b46; padding: 60px 50px; border-radius: 16px; min-height: 500px;">
+      <div>
+        <h3 style="font-family: 'Playfair Display', serif; font-size: clamp(32px, 4vw, 56px); color: var(--white); line-height: 1.1; margin-bottom: 24px;">Everything you want and more</h3>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.8; max-width: 90%;">We treat ACTION as a holistic firm. From A to Z and helping your vision become a brand, to photoshoot generation and execution, to collaborating on brand campaigns and maximizing the performance side of your business, we offer multi-faceted solutions to support your needs at every stage.</p>
+      </div>
+      <a href="services.html" style="font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); text-decoration: none; display: inline-flex; align-items: center; gap: 12px; margin-top: 40px;">
+        <span class="circle-icon" style="width: 24px; height: 24px; border-radius: 50%; background: var(--white); color: var(--black); display: flex; align-items: center; justify-content: center; font-size: 10px;">→</span>
+        ADDITIVE SERVICES
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM FEED -->
+<section id="instagram" class="reveal" style="padding: 40px 40px 80px; background: var(--white);">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(32px, 4vw, 52px); color: var(--black); font-weight: 400; margin: 0;">Follow Us</h2>
+    <a href="https://instagram.com/azionepr" target="_blank" style="font-family: 'Playfair Display', serif; font-size: clamp(24px, 3.5vw, 42px); color: var(--black); text-decoration: none;">@azionepr</a>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; overflow-x: auto;">
+    <a href="#" style="display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: center/cover url('https://images.unsplash.com/photo-1622597467821-12c8a1680d28?auto=format&fit=crop&q=80');"></a>
+    <a href="#" style="display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: center/cover url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80');"></a>
+    <a href="#" style="display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: center/cover url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80');"></a>
+    <a href="#" style="display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: center/cover url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80');"></a>
+    <a href="#" style="display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: center/cover url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80');"></a>
+    <a href="#" style="display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: center/cover url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80');"></a>
+  </div>
+</section>
+
+<!-- CONTACT / CTA -->
+<section id="contact">
+  <div class="cta-block reveal">
+    <h2>
+      Interested in our work?<br>
+      Let's talk. 
+      <a href="#" class="cta-link-inline" onclick="openModal(); return false;">
+        <span class="arrow-circle black-bg">↗</span>
+        CONTACT US
+      </a>
+    </h2>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-wordmark">ELEPHANT PRODUCTIONS</span>
+  <div class="footer-bottom">
+    <span>© Elephant Productions 2026</span>
+    <div class="footer-links">
+      <a href="work.html">Work</a>
+      <a href="services.html">Services</a>
+      <a href="influencers.html">Influencers</a>
+      <a href="about.html">About</a>
+      <a href="https://instagram.com/azionepr" target="_blank">Instagram</a>
+      <a href="mailto:info@azionepr.com">info@azionepr.com</a>
+      <a href="#contact" onclick="openModal(); return false;">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
