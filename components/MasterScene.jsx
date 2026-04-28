@@ -123,12 +123,13 @@ export default function MasterScene() {
       }
 
       // 5. Hero brand text — scale 1→0.65, opacity 1→0, translateY 0→-40px
+      //    MUST keep translate(-50%,-50%) to stay centred — RAF owns this transform
       if (brandText) {
-        const ratio     = Math.min(scrollY / 300, 1);
-        const scale     = 1 - ratio * 0.35;
-        const opacity   = Math.max(1 - ratio * 1.1, 0);
-        const tY        = -ratio * 40;
-        brandText.style.transform = `scale(${scale}) translateY(${tY}px)`;
+        const ratio   = Math.min(scrollY / 300, 1);
+        const scale   = 1 - ratio * 0.35;
+        const opacity = Math.max(1 - ratio * 1.1, 0);
+        const tY      = -ratio * 40;
+        brandText.style.transform = `translate(-50%, -50%) scale(${scale}) translateY(${tY}px)`;
         brandText.style.opacity   = opacity;
       }
 
