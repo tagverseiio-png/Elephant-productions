@@ -1,87 +1,18 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+// Loaded with ssr:false — Three.js requires window/WebGL, crashes on server
+const HeroCanvas = dynamic(() => import("../components/HeroCanvas"), { ssr: false });
 
 const BRANDS = [
   "[Your Client 1]", "[Client 2]", "[Client 3]", "[Client 4]", "[Client 5]"
 ];
 
-// ─────────────────────────────────────────────
-// Three.js particle field (desktop only)
-// ─────────────────────────────────────────────
-async function initParticles(canvas) {
-  if (!canvas || window.innerWidth < 768) return null;
 
-  const THREE = await import("three");
-
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-
-  const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-  camera.position.z = 5;
-
-  // Particles
-  const count    = 1800;
-  const geometry = new THREE.BufferGeometry();
-  const positions = new Float32Array(count * 3);
-  for (let i = 0; i < count * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 20;
-  }
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-
-  const material = new THREE.PointsMaterial({
-    color: 0xffffff,
-    size: 0.03,
-    transparent: true,
-    opacity: 0.55,
-    sizeAttenuation: true,
-  });
-
-  const points = new THREE.Points(geometry, material);
-  scene.add(points);
-
-  let raf;
-  const tick = () => {
-    points.rotation.y += 0.00015;
-    points.rotation.x += 0.00008;
-    renderer.render(scene, camera);
-    raf = requestAnimationFrame(tick);
-  };
-  tick();
-
-  const onResize = () => {
-    if (!canvas) return;
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    camera.aspect = canvas.clientWidth / canvas.clientHeight;
-    camera.updateProjectionMatrix();
-  };
-  window.addEventListener("resize", onResize);
-
-  return () => {
-    cancelAnimationFrame(raf);
-    window.removeEventListener("resize", onResize);
-    renderer.dispose();
-    geometry.dispose();
-    material.dispose();
-  };
-}
-
-// ─────────────────────────────────────────────
-// Home Page Component
-// ─────────────────────────────────────────────
 export default function Home() {
-  const canvasRef  = useRef(null);
-  const cleanupRef = useRef(null);
-
-  // Three.js particle background
-  useEffect(() => {
-    initParticles(canvasRef.current).then((fn) => {
-      cleanupRef.current = fn;
-    });
-    return () => { if (cleanupRef.current) cleanupRef.current(); };
-  }, []);
+  const cleanupRef = useRef({});
 
   // Hero text reveal via Splitting.js + GSAP
   useEffect(() => {
@@ -222,12 +153,8 @@ export default function Home() {
           ══════════════════════════════════════════════════════════ */}
       <section id="hero" className="hero">
 
-        {/* Three.js particle canvas (on top of video, blended) */}
-        <canvas
-          ref={canvasRef}
-          className="hero-particles"
-          aria-hidden="true"
-        />
+        {/* Three.js particle canvas — loaded client-only via dynamic() */}
+        <HeroCanvas />
 
         {/* Video background */}
         <video
