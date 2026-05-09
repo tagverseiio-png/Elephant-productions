@@ -25,6 +25,12 @@ export default function GlobalLayout({ children }) {
       gsap.registerPlugin(ScrollTrigger);
       gsapInstance = gsap;
 
+      // Ensure animations don't reverse when scrolling back up
+      ScrollTrigger.defaults({
+        toggleActions: "play none none none",
+        start: "top 85%",
+      });
+
       // Lenis takes over — disable native smooth scroll
       document.documentElement.style.scrollBehavior = "auto";
 
@@ -42,6 +48,9 @@ export default function GlobalLayout({ children }) {
       lenisTickRef.current = tick;
 
       lenis.on("scroll", ScrollTrigger.update);
+      
+      // Refresh ScrollTrigger once Lenis is initialized
+      ScrollTrigger.refresh();
     };
 
     init();
