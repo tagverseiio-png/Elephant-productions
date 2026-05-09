@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Nav from "./Nav";
 import Footer from "./Footer";
@@ -9,63 +9,95 @@ import MasterScene from "./MasterScene";
 
 export default function GlobalLayout({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoaded,    setIsLoaded]    = useState(false);
   const pathname = usePathname();
+  const lenisRef = useRef(null);
+  const lenisTickRef = useRef(null);
 
-  // Page load fade-in on each route change
+  // ── Lenis smooth scroll + GSAP ScrollTrigger integration ──
   useEffect(() => {
-    setIsLoaded(false);
-    const t = setTimeout(() => setIsLoaded(true), 50);
-    return () => clearTimeout(t);
-  }, [pathname]);
+    let gsapInstance;
 
-  // Scroll reveal via anime.js v4
-  useEffect(() => {
-    let io;
-    const setup = async () => {
-      const { animate, stagger } = await import("animejs");
+    const init = async () => {
+      const { default: Lenis } = await import("lenis");
+      const { gsap }           = await import("gsap");
+      const { ScrollTrigger }  = await import("gsap/ScrollTrigger");
 
-      io = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const el = entry.target;
-          observer.unobserve(el);
-          el.classList.add("visible");
+      gsap.registerPlugin(ScrollTrigger);
+      gsapInstance = gsap;
 
-          if (el.classList.contains("reveal-individual")) {
-            animate(el.querySelectorAll(".reveal-item"), {
-              opacity: [0, 1], translateY: [20, 0],
-              ease: "out(2)", duration: 500, delay: stagger(120),
-            });
-          } else if (el.dataset.direction === "left") {
-            animate(el, { opacity: [0, 1], translateX: [60, 0], ease: "out(2)", duration: 700 });
-          } else if (el.dataset.direction === "right") {
-            animate(el, { opacity: [0, 1], translateX: [-60, 0], ease: "out(2)", duration: 700 });
-          } else {
-            animate(el, { opacity: [0, 1], translateY: [30, 0], ease: "out(2)", duration: 700 });
-          }
-        });
-      }, { threshold: 0.1 });
+      // Lenis takes over — disable native smooth scroll
+      document.documentElement.style.scrollBehavior = "auto";
 
-      document.querySelectorAll(".reveal, .reveal-individual, [data-direction]").forEach((el) => io.observe(el));
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        touchMultiplier: 2,
+      });
+      lenisRef.current = lenis;
+
+      // Sync Lenis tick with GSAP for accurate ScrollTrigger positions
+      const tick = (time) => lenis.raf(time * 1000);
+      gsap.ticker.add(tick);
+      gsap.ticker.lagSmoothing(0);
+      lenisTickRef.current = tick;
+
+      lenis.on("scroll", ScrollTrigger.update);
     };
 
-    setup();
-    return () => { if (io) io.disconnect(); };
+    init();
+
+    return () => {
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
+      if (gsapInstance && lenisTickRef.current) {
+        gsapInstance.ticker.remove(lenisTickRef.current);
+      }
+    };
+  }, []);
+
+  // ── GSAP single page-entry animation (replaces Framer Motion fade) ──
+  // Runs on every route change. clearProps:'all' removes inline styles after.
+  useEffect(() => {
+    const run = async () => {
+      const { gsap }          = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+
+      // Kill stale triggers from previous page
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+
+      // Single, clean page entry — GSAP owns this, nothing else
+      gsap.fromTo(
+        ".page-content",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          clearProps: "all",  // remove inline styles when done
+          onComplete: () => ScrollTrigger.refresh(),
+        }
+      );
+    };
+
+    run();
   }, [pathname]);
 
   return (
-    <div
-      className="page-wrapper"
-      style={{ opacity: isLoaded ? 1 : 0, transition: "opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
-    >
-      {/* MasterScene: single RAF loop — cursor + nav + hero animations */}
+    <div className="page-wrapper">
+      {/* MasterScene: RAF loop — cursor + nav + hero parallax */}
       <MasterScene />
-
       <Cursor />
       <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <Nav onOpenModal={() => setIsModalOpen(true)} />
-      {children}
+
+      {/* page-content is the ONLY element GSAP fades in on route change */}
+      <div className="page-content">
+        {children}
+      </div>
+
       <Footer onOpenModal={() => setIsModalOpen(true)} />
     </div>
   );

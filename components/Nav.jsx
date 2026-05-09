@@ -17,24 +17,20 @@ export default function Nav({ onOpenModal }) {
       </div>
 
       <Link href="/" className="nav-logo">
-        ELEPHANT PRODUCTIONS
+        ELEPHANT PRODUCTION
       </Link>
 
       <div className="nav-right">
         <Link href="/about">About</Link>
-        <a href="https://instagram.com/azionepr" target="_blank" rel="noopener noreferrer">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
           Instagram
         </a>
-        <a
-          href="#contact"
+        <Link
+          href="/contact"
           data-cursor-expand
-          onClick={(e) => {
-            e.preventDefault();
-            onOpenModal();
-          }}
         >
           Contact
-        </a>
+        </Link>
       </div>
     </nav>
   );

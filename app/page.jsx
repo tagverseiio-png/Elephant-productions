@@ -1,19 +1,233 @@
 "use client";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 const BRANDS = [
-  "Sweetgreen","HOKA","Away","J. Crew","REI",
-  "Fender","Kosas","Lacoste","Vuori","Caraway","Sakara Life",
+  "[Your Client 1]", "[Client 2]", "[Client 3]", "[Client 4]", "[Client 5]"
 ];
 
+// ─────────────────────────────────────────────
+// Three.js particle field (desktop only)
+// ─────────────────────────────────────────────
+async function initParticles(canvas) {
+  if (!canvas || window.innerWidth < 768) return null;
+
+  const THREE = await import("three");
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+  camera.position.z = 5;
+
+  // Particles
+  const count    = 1800;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 20;
+  }
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+  const material = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.03,
+    transparent: true,
+    opacity: 0.55,
+    sizeAttenuation: true,
+  });
+
+  const points = new THREE.Points(geometry, material);
+  scene.add(points);
+
+  let raf;
+  const tick = () => {
+    points.rotation.y += 0.00015;
+    points.rotation.x += 0.00008;
+    renderer.render(scene, camera);
+    raf = requestAnimationFrame(tick);
+  };
+  tick();
+
+  const onResize = () => {
+    if (!canvas) return;
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.updateProjectionMatrix();
+  };
+  window.addEventListener("resize", onResize);
+
+  return () => {
+    cancelAnimationFrame(raf);
+    window.removeEventListener("resize", onResize);
+    renderer.dispose();
+    geometry.dispose();
+    material.dispose();
+  };
+}
+
+// ─────────────────────────────────────────────
+// Home Page Component
+// ─────────────────────────────────────────────
 export default function Home() {
+  const canvasRef  = useRef(null);
+  const cleanupRef = useRef(null);
+
+  // Three.js particle background
+  useEffect(() => {
+    initParticles(canvasRef.current).then((fn) => {
+      cleanupRef.current = fn;
+    });
+    return () => { if (cleanupRef.current) cleanupRef.current(); };
+  }, []);
+
+  // Hero text reveal via Splitting.js + GSAP
+  useEffect(() => {
+    let killed = false;
+    const run = async () => {
+      const { gsap }      = await import("gsap");
+      const { splitAndAnimate } = await import("../hooks/useSplitting");
+      if (killed) return;
+
+      // Split + animate ELEPHANT then PRODUCTION
+      const cleanA = await splitAndAnimate(".hero-brand-elephant", gsap, 0.1);
+      const cleanB = await splitAndAnimate(".hero-brand-productions", gsap, 0.45);
+
+      // Tagline + CTA fade in after title
+      gsap.fromTo(
+        ".hero-tagline",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.9, clearProps: "all" }
+      );
+      gsap.fromTo(
+        ".hero-cta-pill",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 1.1, clearProps: "all" }
+      );
+      // Corner labels
+      gsap.fromTo(
+        ".hero-corner",
+        { opacity: 0 },
+        { opacity: 1, duration: 1, ease: "power2.out", delay: 1.3, stagger: 0.15, clearProps: "all" }
+      );
+
+      return () => { cleanA?.(); cleanB?.(); };
+    };
+
+    run().then((fn) => { if (fn) cleanupRef._heroCleanup = fn; });
+    return () => {
+      killed = true;
+      cleanupRef._heroCleanup?.();
+    };
+  }, []);
+
+  // Scroll-based GSAP animations for bento cards + instagram grid
+  useEffect(() => {
+    let stTriggers = [];
+    const run = async () => {
+      const { gsap }          = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Bento cards — slide up on scroll
+      document.querySelectorAll(".bento-card").forEach((card) => {
+        gsap.set(card, { opacity: 0, y: 60 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: card,
+            start: "top 88%",
+            onEnter: () => {
+              gsap.to(card, { opacity: 1, y: 0, duration: 0.85, ease: "power3.out", clearProps: "all" });
+              // Stagger internal text
+              gsap.fromTo(
+                card.querySelectorAll(".bento-card-label, .bento-card-title, .bento-card-body"),
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.1, delay: 0.2, clearProps: "all" }
+              );
+            },
+          })
+        );
+      });
+
+      // sp-img-block slide in
+      document.querySelectorAll(".sp-img-block").forEach((el, i) => {
+        gsap.set(el, { opacity: 0, x: i % 2 === 0 ? -50 : 50 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 90%",
+            onEnter: () => gsap.to(el, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out", clearProps: "all" }),
+          })
+        );
+      });
+
+      // Instagram grid images — staggered fade + scale
+      const igPosts = document.querySelectorAll(".insta-post");
+      if (igPosts.length) {
+        gsap.set(igPosts, { opacity: 0, scale: 0.93 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: ".instagram-grid",
+            start: "top 88%",
+            onEnter: () =>
+              gsap.to(igPosts, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.7,
+                ease: "power3.out",
+                stagger: 0.1,
+                clearProps: "all",
+              }),
+          })
+        );
+      }
+
+      // Home statement
+      const stmt = document.querySelector(".home-statement");
+      if (stmt) {
+        gsap.set(stmt, { opacity: 0, x: -50 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: stmt,
+            start: "top 88%",
+            onEnter: () => gsap.to(stmt, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }),
+          })
+        );
+      }
+
+      // IG header
+      const igHeader = document.querySelector(".ig-header");
+      if (igHeader) {
+        gsap.set(igHeader, { opacity: 0, y: 30 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: igHeader,
+            start: "top 90%",
+            onEnter: () => gsap.to(igHeader, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }),
+          })
+        );
+      }
+    };
+
+    run();
+    return () => stTriggers.forEach((t) => t.kill());
+  }, []);
+
   return (
     <main>
-
       {/* ══════════════════════════════════════════════════════════
           CINEMATIC HERO
           ══════════════════════════════════════════════════════════ */}
       <section id="hero" className="hero">
+
+        {/* Three.js particle canvas (on top of video, blended) */}
+        <canvas
+          ref={canvasRef}
+          className="hero-particles"
+          aria-hidden="true"
+        />
 
         {/* Video background */}
         <video
@@ -23,42 +237,42 @@ export default function Home() {
           poster="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=1920"
         />
 
-        {/* Gradient overlay — richer than flat black */}
+        {/* Gradient overlay */}
         <div className="hero-overlay" />
 
         {/* Cinematic grain */}
         <div className="hero-grain" aria-hidden="true" />
 
-        {/* ── BRAND TEXT — perfectly centred, RAF animates id="hero-brand" ── */}
+        {/* ── BRAND TEXT ── */}
         <div id="hero-brand" className="hero-brand">
-          <span className="hero-brand-line hero-brand-elephant">ELEPHANT</span>
+          <span className="hero-brand-line hero-brand-elephant" style={{ opacity: 0 }}>ELEPHANT</span>
           <span className="hero-brand-divider" aria-hidden="true" />
-          <span className="hero-brand-line hero-brand-productions">PRODUCTIONS</span>
+          <span className="hero-brand-line hero-brand-productions" style={{ opacity: 0 }}>PRODUCTION</span>
         </div>
 
-        {/* ── CORNER LABELS — editorial feel ── */}
-        <div className="hero-corner hero-corner--tl" id="hero-bottom-sub">
-          <span className="hero-corner-label">EST. 2018</span>
-          <span className="hero-corner-label">NEW YORK / LOS ANGELES</span>
+        {/* ── CORNER LABELS ── */}
+        <div className="hero-corner hero-corner--tl" id="hero-bottom-sub" style={{ opacity: 0 }}>
+          <span className="hero-corner-label">EST. 2021</span>
+          <span className="hero-corner-label">SINGAPORE</span>
         </div>
-        <div className="hero-corner hero-corner--tr" id="hero-bottom-sub2">
-          <span className="hero-corner-label">Creative Communications</span>
-          <span className="hero-corner-label">Agency</span>
+        <div className="hero-corner hero-corner--tr" id="hero-bottom-sub2" style={{ opacity: 0 }}>
+          <span className="hero-corner-label">PRODUCTION &amp; CREATIVE</span>
+          <span className="hero-corner-label">MEDIA AGENCY</span>
         </div>
 
-        {/* ── BOTTOM CONTENT — tagline + CTA ── */}
+        {/* ── BOTTOM CONTENT ── */}
         <div id="hero-bottom" className="hero-bottom">
-          <p className="hero-tagline">
-            A full-funnel, creative communications agency
+          <p className="hero-tagline" style={{ opacity: 0 }}>
+            A production-first, creative media agency
           </p>
-          <Link href="/work" className="hero-cta-pill" data-cursor-expand>
-            <span>VIEW OUR WORK</span>
-            <span className="pill-arrow">↗</span>
+          <Link href="/work" className="hero-cta-pill" data-cursor-expand style={{ opacity: 0 }}>
+            <span className="pill-arrow">↑</span>
+            <span>VIEW WORK</span>
           </Link>
         </div>
 
         {/* ── SCROLL INDICATOR ── */}
-        <div className="hero-scroll-indicator" id="hero-bottom">
+        <div className="hero-scroll-indicator">
           <span className="scroll-line" />
           <span className="scroll-text">SCROLL</span>
         </div>
@@ -76,13 +290,13 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════
           INTRO STATEMENT
           ══════════════════════════════════════════════════════════ */}
-      <section className="home-statement reveal" data-direction="right">
+      <section className="home-statement" data-direction="right" style={{ opacity: 0 }}>
         <p className="statement-text">
           We increase brand visibility through thoughtful storytelling,
           distinct communications strategies, and an unmatched cultural fingerprint.
         </p>
         <Link href="/about" className="statement-link" data-cursor-expand>
-          Our Story <span>→</span>
+          OUR STORY <span>→</span>
         </Link>
       </section>
 
@@ -93,85 +307,92 @@ export default function Home() {
 
         {/* CARD 1 */}
         <div className="sp-row" style={{ gap: "20px", marginBottom: "20px" }}>
-          <div className="sp-img-block reveal" data-direction="right"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1596462502278-27bf84033058?auto=format&fit=crop&q=80')", borderRadius: "20px", minHeight: "520px" }} />
-          <div className="bento-card reveal" data-direction="left"
-            style={{ background: "linear-gradient(135deg, #7a2d12 0%, #a8420f 100%)", borderRadius: "20px" }}>
+          <div className="sp-img-block"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1596462502278-27bf84033058?auto=format&fit=crop&q=80')", borderRadius: "20px", minHeight: "520px", opacity: 0 }} />
+          <div className="bento-card"
+            style={{ background: "linear-gradient(135deg, #4A3A2F 0%, #352920 100%)", borderRadius: "20px", opacity: 0 }}>
             <div className="bento-card-top">
-              <span className="bento-card-label">01 — Communications</span>
-              <h3 className="bento-card-title">Infusing creative alchemy into today's brands</h3>
+              <span className="bento-card-label">01 — CREATIVE PRODUCTION</span>
+              <h3 className="bento-card-title">Infusing cinematic craft into today's brands</h3>
               <p className="bento-card-body">
-                We create magic for brands by building their authority and differentiated
-                perspective in the market through thoughtful storytelling.
+                We build brand visibility through powerful visual storytelling,
+                sharp creative strategy, and a production lens that makes your
+                brand impossible to ignore. With a deep understanding of your
+                audience and a hands-on collaborative approach, we bring your
+                brand's true identity to the forefront — frame by frame.
               </p>
             </div>
             <Link href="/services" className="bento-card-link" data-cursor-expand>
+              <span className="bento-link-icon">↑</span>
               <span className="bento-link-text">OUR SERVICES</span>
-              <span className="bento-link-icon">↗</span>
             </Link>
           </div>
         </div>
 
         {/* CARD 2 */}
         <div className="sp-row" style={{ gap: "20px", marginBottom: "20px" }}>
-          <div className="bento-card reveal" data-direction="right"
-            style={{ background: "linear-gradient(135deg, #1e3d28 0%, #2f5a3c 100%)", borderRadius: "20px" }}>
+          <div className="bento-card"
+            style={{ background: "linear-gradient(135deg, #2E4B35 0%, #1F3624 100%)", borderRadius: "20px", opacity: 0 }}>
             <div className="bento-card-top">
-              <span className="bento-card-label">02 — Influencer</span>
-              <h3 className="bento-card-title">Maximizing your orbit</h3>
+              <span className="bento-card-label">02 — INFLUENCER</span>
+              <h3 className="bento-card-title">Maximizing your reach</h3>
               <p className="bento-card-body">
-                We connect your brand with the right talent, VIPs, and influencers to ensure
-                the relationship with your community is a powerful lever in the overall strategy.
+                We connect your brand with the right creators, talent, and
+                digital voices to ensure your community becomes your
+                most powerful marketing channel. Through our network of
+                influencers and content collaborators, we craft campaigns
+                that feel genuine, drive real engagement, and build
+                lasting brand loyalty.
               </p>
             </div>
             <Link href="/influencers" className="bento-card-link" data-cursor-expand>
-              <span className="bento-link-text">INFLUENCER / VIP CARE</span>
-              <span className="bento-link-icon">↗</span>
+              <span className="bento-link-icon">↑</span>
+              <span className="bento-link-text">INFLUENCER SERVICES</span>
             </Link>
           </div>
-          <div className="sp-img-block reveal" data-direction="left"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80')", borderRadius: "20px", minHeight: "520px" }} />
+          <div className="sp-img-block"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80')", borderRadius: "20px", minHeight: "520px", opacity: 0 }} />
         </div>
 
-        {/* CARD 3 — wide single card */}
-        <div className="reveal" data-direction="right"
-          style={{ borderRadius: "20px", overflow: "hidden", marginBottom: "20px" }}>
+        {/* CARD 3 — wide */}
+        <div style={{ borderRadius: "20px", overflow: "hidden", marginBottom: "20px" }}>
           <div className="bento-card bento-card--wide"
-            style={{ background: "linear-gradient(120deg, #0a2e38 0%, #0f4556 60%, #1a6070 100%)" }}>
+            style={{ background: "linear-gradient(120deg, #1C3F46 0%, #153238 100%)", opacity: 0 }}>
             <div className="bento-card-wide-inner">
               <div className="bento-card-top">
-                <span className="bento-card-label">03 — Full Service</span>
+                <span className="bento-card-label">03 — FULL SERVICE</span>
                 <h3 className="bento-card-title bento-card-title--wide">Everything you want and more</h3>
               </div>
               <p className="bento-card-body" style={{ maxWidth: "500px" }}>
-                From A to Z — helping your vision become a brand, to photoshoot generation and execution,
-                to collaborating on brand campaigns and maximizing performance.
+                From A to Z — helping your vision become a brand identity,
+                to full-scale film and photoshoot production, to commercial
+                campaigns and social media performance. We offer end-to-end
+                creative solutions at every stage of your brand's journey.
               </p>
             </div>
-            <Link href="/services" className="bento-card-link bento-card-link--wide" data-cursor-expand>
+            <Link href="/services#additive-services" className="bento-card-link bento-card-link--wide" data-cursor-expand>
+              <span className="bento-link-icon">↑</span>
               <span className="bento-link-text">ADDITIVE SERVICES</span>
-              <span className="bento-link-icon">↗</span>
             </Link>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          INSTAGRAM FEED
+          INSTAGRAM STRIP
           ══════════════════════════════════════════════════════════ */}
       <section id="instagram" className="ig-section">
-        <div className="ig-header reveal" data-direction="right">
+        <div className="ig-header" style={{ opacity: 0 }}>
           <div>
-            <span className="ig-label">Follow along</span>
-            <h2 className="ig-title">@azionepr</h2>
+            <span className="ig-label">Follow Us</span>
+            <h2 className="ig-title">@elephantproduction</h2>
           </div>
-          <a href="https://instagram.com/azionepr" target="_blank" rel="noopener noreferrer"
-            className="ig-cta" data-cursor-expand>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="ig-cta" data-cursor-expand>
             VIEW INSTAGRAM ↗
           </a>
         </div>
 
-        <div className="instagram-grid reveal-individual">
+        <div className="instagram-grid">
           {[
             "https://images.unsplash.com/photo-1622597467821-12c8a1680d28?auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80",
@@ -180,32 +401,12 @@ export default function Home() {
             "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80",
           ].map((src, i) => (
-            <a key={i} href="#" className="insta-post reveal-item"
-              style={{ background: `center/cover url('${src}')` }} />
+            <a key={i} href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+              className="insta-post"
+              style={{ background: `center/cover url('${src}')`, opacity: 0 }} />
           ))}
         </div>
       </section>
-
-      {/* ══════════════════════════════════════════════════════════
-          CTA BLOCK
-          ══════════════════════════════════════════════════════════ */}
-      <section id="contact" className="cta-section">
-        <div className="cta-inner reveal" data-direction="right">
-          <span className="cta-eyebrow">Let's create something great</span>
-          <h2 className="cta-headline">
-            Ready to tell<br />
-            <em>your</em> story?
-          </h2>
-          <a href="#contact" className="cta-button" data-cursor-expand>
-            <span>GET IN TOUCH</span>
-            <span className="cta-btn-arrow">↗</span>
-          </a>
-        </div>
-        <div className="cta-decoration" aria-hidden="true">
-          <span className="cta-deco-text">EP</span>
-        </div>
-      </section>
-
     </main>
   );
 }

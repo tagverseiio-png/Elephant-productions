@@ -1,45 +1,175 @@
 "use client";
-import { useState, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { splitAndAnimate } from "../../hooks/useSplitting";
 
 export default function About() {
   const galleryRef = useRef(null);
-  const [tIdx, setTIdx] = useState(0);
-  const totalTestimonials = 2;
+
+  // ── Swiper testimonials ──────────────────────────────────────
+  useEffect(() => {
+    let swiperInstance;
+    const initSwiper = async () => {
+      const { default: Swiper } = await import("swiper");
+      const { Navigation, Autoplay, EffectFade } = await import("swiper/modules");
+      await import("swiper/css");
+      await import("swiper/css/effect-fade");
+
+      swiperInstance = new Swiper(".testimonial-swiper", {
+        modules: [Navigation, Autoplay, EffectFade],
+        effect: "fade",
+        loop: true,
+        autoplay: { delay: 4000, disableOnInteraction: false },
+        navigation: {
+          prevEl: ".t-nav-btn.prev-btn",
+          nextEl: ".t-nav-btn.next-btn",
+        },
+        fadeEffect: { crossFade: true },
+      });
+    };
+    initSwiper();
+    return () => { if (swiperInstance) swiperInstance.destroy(); };
+  }, []);
+
+  // ── GSAP animations ──────────────────────────────────────────
+  useEffect(() => {
+    let stTriggers = [];
+    const run = async () => {
+      const { gsap }          = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Title char reveal
+      await splitAndAnimate("#about-title", gsap, 0.1);
+
+      // Main statement — word by word
+      const statement = document.querySelector(".about-content h3");
+      if (statement) {
+        const words = statement.innerText.split(" ");
+        statement.innerHTML = words
+          .map((w) => `<span class="word-wrap" style="display:inline-block;overflow:hidden;margin-right:0.25em"><span class="word-inner" style="display:inline-block;transform:translateY(100%);opacity:0">${w}</span></span>`)
+          .join(" ");
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: statement,
+            start: "top 88%",
+            onEnter: () =>
+              gsap.to(".word-inner", {
+                y: "0%",
+                opacity: 1,
+                duration: 0.6,
+                ease: "power3.out",
+                stagger: 0.04,
+                clearProps: "all",
+              }),
+          })
+        );
+      }
+
+      // "What We Do" section
+      const aboutText = document.querySelector(".about-text");
+      if (aboutText) {
+        gsap.set(aboutText, { opacity: 0, y: 40 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: aboutText,
+            start: "top 88%",
+            onEnter: () => gsap.to(aboutText, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", clearProps: "all" }),
+          })
+        );
+      }
+
+      // Gallery container
+      const galContainer = document.querySelector(".about-gallery-container");
+      if (galContainer) {
+        gsap.set(galContainer, { opacity: 0, y: 40 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: galContainer,
+            start: "top 88%",
+            onEnter: () => gsap.to(galContainer, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", clearProps: "all" }),
+          })
+        );
+      }
+
+      // Testimonials section
+      const testimonials = document.querySelector(".testimonials");
+      if (testimonials) {
+        gsap.set(testimonials, { opacity: 0, y: 40 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: testimonials,
+            start: "top 88%",
+            onEnter: () => gsap.to(testimonials, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", clearProps: "all" }),
+          })
+        );
+      }
+
+      // Two-column gallery — slide from sides with parallax
+      const twoGal = document.querySelectorAll(".two-gal-item");
+      if (twoGal.length >= 2) {
+        gsap.set(twoGal[0], { opacity: 0, x: -60 });
+        gsap.set(twoGal[1], { opacity: 0, x: 60 });
+        stTriggers.push(
+          ScrollTrigger.create({
+            trigger: ".two-col-gallery",
+            start: "top 88%",
+            onEnter: () => {
+              gsap.to(twoGal[0], { opacity: 1, x: 0, duration: 1, ease: "power3.out", clearProps: "all" });
+              gsap.to(twoGal[1], { opacity: 1, x: 0, duration: 1, ease: "power3.out", delay: 0.15, clearProps: "all" });
+            },
+          })
+        );
+
+        // Parallax on scroll
+        twoGal.forEach((img, i) => {
+          stTriggers.push(
+            ScrollTrigger.create({
+              trigger: img,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+              onUpdate: (self) => {
+                const move = (self.progress - 0.5) * 40;
+                gsap.set(img, { y: i % 2 === 0 ? move : -move });
+              },
+            })
+          );
+        });
+      }
+    };
+
+    run();
+    return () => stTriggers.forEach((t) => t.kill());
+  }, []);
 
   const scrollGallery = (dir) => {
     if (galleryRef.current) {
-      const scrollAmount = galleryRef.current.clientWidth / 2;
-      galleryRef.current.scrollBy({ left: scrollAmount * dir, behavior: "smooth" });
+      galleryRef.current.scrollBy({ left: galleryRef.current.clientWidth / 2 * dir, behavior: "smooth" });
     }
-  };
-
-  const changeTestimonial = (dir) => {
-    setTIdx((prev) => (prev + dir + totalTestimonials) % totalTestimonials);
   };
 
   return (
     <main>
-      {/* ABOUT */}
       <section id="about">
         <div className="about-header">
-          <h2>About</h2>
+          <h2 id="about-title">About</h2>
         </div>
+
         <div className="about-content">
-          <h3 className="reveal">
-            We do more than just PR.<br />
-            We move mountains for brands.
+          <h3>
+            We do more than just produce.<br />
+            We build brands that are impossible to forget.
           </h3>
-          <div className="about-text reveal">
+          <div className="about-text">
             <span className="what-we-do">What We Do</span>
             <p>
-              In the ever-changing media landscape, we employ a distinctive and flexible approach to solidify and bolster brand loyalty among
-              well-established brands while propelling emerging companies into the forefront of consumer recognition, transforming them into
-              household names.
+              In a world flooded with content, we take a distinctive and production-first approach to build brand authority for established names — while launching emerging brands into the spotlight and turning them into names people remember. Chennai-based. Built for bold brands.
             </p>
           </div>
         </div>
 
-        <div className="about-gallery-container reveal">
+        {/* GALLERY */}
+        <div className="about-gallery-container">
           <button className="gal-nav-btn prev" onClick={() => scrollGallery(-1)}>‹</button>
           <div className="about-gallery" id="aboutGallery" ref={galleryRef}>
             <div className="a-gal-item" style={{ background: "center/cover url('https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80')" }}></div>
@@ -52,69 +182,76 @@ export default function About() {
           <button className="gal-nav-btn next" onClick={() => scrollGallery(1)}>›</button>
         </div>
 
-        {/* TESTIMONIALS */}
+        {/* TESTIMONIALS — Swiper */}
         <div className="testimonials">
-          <div className="testimonial-track">
-            <div className={`testimonial ${tIdx === 0 ? "active" : ""}`}>
-              <div className="t-left">
-                <span className="testimonial-label">What People Say</span>
-                <blockquote>
-                  “Working with AZIONE has been an absolute game changer for our brand. Their strategic approach, thought leadership and
-                  relationships throughout the media and influencer worlds have been key in propelling our business forward. The partnership
-                  has felt like an extension of our internal team and has been an integral part of our 360 strategies. We love working with
-                  AZIONE!”
-                </blockquote>
-              </div>
-              <div className="t-right">
-                <div className="testimonial-attr">
-                  <strong>Ashley Posick</strong>
-                  <span>Director of Global Communications,<br />Peter Thomas Roth</span>
+          <div className="swiper testimonial-swiper">
+            <div className="swiper-wrapper">
+
+              <div className="swiper-slide">
+                <div className="testimonial active">
+                  <div className="t-left">
+                    <span className="testimonial-label">What People Say</span>
+                    <blockquote>
+                      "Working with Elephant Production was a game-changer for our brand. Their eye for storytelling and production quality is unlike anything we've seen in Chennai."
+                    </blockquote>
+                  </div>
+                  <div className="t-right">
+                    <div className="testimonial-attr">
+                      <strong>[Client Name]</strong>
+                      <span>[Role],<br />[Brand]</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={`testimonial ${tIdx === 1 ? "active" : ""}`}>
-              <div className="t-left">
-                <span className="testimonial-label">What People Say</span>
-                <blockquote>
-                  “As an iconic global lifestyle brand, working with a boutique forward thinking agency like AZIONE has been key to our
-                  success this past year. It's refreshing to partner with a team that thinks outside the box and brings new and innovative
-                  ideas to the table.”
-                </blockquote>
-              </div>
-              <div className="t-right">
-                <div className="testimonial-attr">
-                  <strong>Kimry Blackwelder</strong>
-                  <span>Senior Director, Public Relations, Cole Haan</span>
+
+              <div className="swiper-slide">
+                <div className="testimonial">
+                  <div className="t-left">
+                    <span className="testimonial-label">What People Say</span>
+                    <blockquote>
+                      "The visual direction they brought to our campaign completely redefined how our audience sees us. An incredibly talented and professional team."
+                    </blockquote>
+                  </div>
+                  <div className="t-right">
+                    <div className="testimonial-attr">
+                      <strong>[Client Name 2]</strong>
+                      <span>[Role],<br />[Brand]</span>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              <div className="swiper-slide">
+                <div className="testimonial">
+                  <div className="t-left">
+                    <span className="testimonial-label">What People Say</span>
+                    <blockquote>
+                      "They didn't just execute our vision—they elevated it. The final films were cinematic, engaging, and drove immediate results for our launch."
+                    </blockquote>
+                  </div>
+                  <div className="t-right">
+                    <div className="testimonial-attr">
+                      <strong>[Client Name 3]</strong>
+                      <span>[Role],<br />[Brand]</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
           <div className="testimonial-nav">
-            <button className="t-nav-btn prev-btn" onClick={() => changeTestimonial(-1)}>PREV</button>
-            <button className="t-nav-btn next-btn" onClick={() => changeTestimonial(1)}>
+            <button className="t-nav-btn prev-btn">PREV</button>
+            <button className="t-nav-btn next-btn">
               NEXT <span className="arrow-circle black-bg">→</span>
             </button>
           </div>
         </div>
 
-        <div className="two-col-gallery reveal">
+        <div className="two-col-gallery">
           <div className="two-gal-item" style={{ background: "center/cover url('https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80')" }}></div>
           <div className="two-gal-item" style={{ background: "center/cover url('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80')" }}></div>
-        </div>
-      </section>
-
-      {/* CONTACT / CTA */}
-      <section id="contact">
-        <div className="cta-block reveal">
-          <h2>
-            Interested in our work?<br />
-            Let's talk.
-            <a href="#contact" className="cta-link-inline">
-              <span className="arrow-circle black-bg">↗</span>
-              CONTACT US
-            </a>
-          </h2>
         </div>
       </section>
     </main>
