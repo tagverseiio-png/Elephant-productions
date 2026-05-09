@@ -24,7 +24,8 @@ export async function setupScrollReveal() {
       ScrollTrigger.create({
         trigger: el,
         start: "top 88%",
-        onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }),
+        once: true,
+        onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", clearProps: "all" }),
       })
     );
   });
@@ -37,6 +38,7 @@ export async function setupScrollReveal() {
       ScrollTrigger.create({
         trigger: el,
         start: "top 88%",
+        once: true,
         onEnter: () =>
           gsap.to(children, {
             opacity: 1,
@@ -44,6 +46,7 @@ export async function setupScrollReveal() {
             duration: 0.7,
             ease: "power3.out",
             stagger: 0.12,
+            clearProps: "all",
           }),
       })
     );
@@ -56,7 +59,8 @@ export async function setupScrollReveal() {
       ScrollTrigger.create({
         trigger: el,
         start: "top 88%",
-        onEnter: () => gsap.to(el, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }),
+        once: true,
+        onEnter: () => gsap.to(el, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out", clearProps: "all" }),
       })
     );
   });
@@ -68,7 +72,8 @@ export async function setupScrollReveal() {
       ScrollTrigger.create({
         trigger: el,
         start: "top 88%",
-        onEnter: () => gsap.to(el, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }),
+        once: true,
+        onEnter: () => gsap.to(el, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out", clearProps: "all" }),
       })
     );
   });

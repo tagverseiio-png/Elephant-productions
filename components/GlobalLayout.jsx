@@ -73,8 +73,8 @@ export default function GlobalLayout({ children }) {
       const { gsap }          = await import("gsap");
       const { ScrollTrigger } = await import("gsap/ScrollTrigger");
 
-      // Kill stale triggers from previous page
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      // Small delay so page animations set up first
+      setTimeout(() => ScrollTrigger.refresh(), 100);
 
       // Single, clean page entry — GSAP owns this, nothing else
       gsap.fromTo(

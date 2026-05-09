@@ -69,6 +69,7 @@ export default function Home() {
           ScrollTrigger.create({
             trigger: card,
             start: "top 88%",
+            once: true,
             onEnter: () => {
               gsap.to(card, { opacity: 1, y: 0, duration: 0.85, ease: "power3.out", clearProps: "all" });
               // Stagger internal text
@@ -89,6 +90,7 @@ export default function Home() {
           ScrollTrigger.create({
             trigger: el,
             start: "top 90%",
+            once: true,
             onEnter: () => gsap.to(el, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out", clearProps: "all" }),
           })
         );
@@ -102,6 +104,7 @@ export default function Home() {
           ScrollTrigger.create({
             trigger: ".instagram-grid",
             start: "top 88%",
+            once: true,
             onEnter: () =>
               gsap.to(igPosts, {
                 opacity: 1,
@@ -136,6 +139,7 @@ export default function Home() {
           ScrollTrigger.create({
             trigger: igHeader,
             start: "top 90%",
+            once: true,
             onEnter: () => gsap.to(igHeader, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }),
           })
         );
@@ -172,27 +176,27 @@ export default function Home() {
 
         {/* ── BRAND TEXT ── */}
         <div id="hero-brand" className="hero-brand">
-          <span className="hero-brand-line hero-brand-elephant" style={{ opacity: 0 }}>ELEPHANT</span>
+          <span className="hero-brand-line hero-brand-elephant">ELEPHANT</span>
           <span className="hero-brand-divider" aria-hidden="true" />
-          <span className="hero-brand-line hero-brand-productions" style={{ opacity: 0 }}>PRODUCTION</span>
+          <span className="hero-brand-line hero-brand-productions">PRODUCTION</span>
         </div>
 
         {/* ── CORNER LABELS ── */}
-        <div className="hero-corner hero-corner--tl" id="hero-bottom-sub" style={{ opacity: 0 }}>
+        <div className="hero-corner hero-corner--tl" id="hero-bottom-sub">
           <span className="hero-corner-label">EST. 2021</span>
           <span className="hero-corner-label">SINGAPORE</span>
         </div>
-        <div className="hero-corner hero-corner--tr" id="hero-bottom-sub2" style={{ opacity: 0 }}>
+        <div className="hero-corner hero-corner--tr" id="hero-bottom-sub2">
           <span className="hero-corner-label">PRODUCTION &amp; CREATIVE</span>
           <span className="hero-corner-label">MEDIA AGENCY</span>
         </div>
 
         {/* ── BOTTOM CONTENT ── */}
         <div id="hero-bottom" className="hero-bottom">
-          <p className="hero-tagline" style={{ opacity: 0 }}>
+          <p className="hero-tagline">
             A production-first, creative media agency
           </p>
-          <Link href="/work" className="hero-cta-pill" data-cursor-expand style={{ opacity: 0 }}>
+          <Link href="/work" className="hero-cta-pill" data-cursor-expand>
             <span className="pill-arrow">↑</span>
             <span>VIEW WORK</span>
           </Link>
@@ -259,7 +263,7 @@ export default function Home() {
         {/* CARD 2 */}
         <div className="sp-row" style={{ gap: "20px", marginBottom: "20px" }}>
           <div className="bento-card"
-            style={{ background: "linear-gradient(135deg, #2E4B35 0%, #1F3624 100%)", borderRadius: "20px", opacity: 0 }}>
+            style={{ background: "linear-gradient(135deg, #2E4B35 0%, #1F3624 100%)", borderRadius: "20px" }}>
             <div className="bento-card-top">
               <span className="bento-card-label">02 — INFLUENCER</span>
               <h3 className="bento-card-title">Maximizing your reach</h3>
@@ -278,13 +282,13 @@ export default function Home() {
             </Link>
           </div>
           <div className="sp-img-block"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80')", borderRadius: "20px", minHeight: "520px", opacity: 0 }} />
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80')", borderRadius: "20px", minHeight: "520px" }} />
         </div>
 
         {/* CARD 3 — wide */}
         <div style={{ borderRadius: "20px", overflow: "hidden", marginBottom: "20px" }}>
           <div className="bento-card bento-card--wide"
-            style={{ background: "linear-gradient(120deg, #1C3F46 0%, #153238 100%)", opacity: 0 }}>
+            style={{ background: "linear-gradient(120deg, #1C3F46 0%, #153238 100%)" }}>
             <div className="bento-card-wide-inner">
               <div className="bento-card-top">
                 <span className="bento-card-label">03 — FULL SERVICE</span>
@@ -309,7 +313,7 @@ export default function Home() {
           INSTAGRAM STRIP
           ══════════════════════════════════════════════════════════ */}
       <section id="instagram" className="ig-section">
-        <div className="ig-header" style={{ opacity: 0 }}>
+        <div className="ig-header">
           <div>
             <span className="ig-label">Follow Us</span>
             <h2 className="ig-title">@elephantproduction</h2>
@@ -330,7 +334,7 @@ export default function Home() {
           ].map((src, i) => (
             <a key={i} href="https://instagram.com" target="_blank" rel="noopener noreferrer"
               className="insta-post"
-              style={{ background: `center/cover url('${src}')`, opacity: 0 }} />
+              style={{ background: `center/cover url('${src}')` }} />
           ))}
         </div>
       </section>
