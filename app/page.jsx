@@ -125,8 +125,9 @@ export default function Home() {
         stTriggers.push(
           ScrollTrigger.create({
             trigger: stmt,
-            start: "top 88%",
-            onEnter: () => gsap.to(stmt, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }),
+            start: "top 85%",
+            once: true,
+            onEnter: () => gsap.to(stmt, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out", clearProps: "all" }),
           })
         );
       }
@@ -221,7 +222,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════
           INTRO STATEMENT
           ══════════════════════════════════════════════════════════ */}
-      <section className="home-statement" data-direction="right" style={{ opacity: 0 }}>
+      <section className="home-statement" data-direction="right">
         <p className="statement-text">
           We increase brand visibility through thoughtful storytelling,
           distinct communications strategies, and an unmatched cultural fingerprint.

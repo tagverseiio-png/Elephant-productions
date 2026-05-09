@@ -29,6 +29,7 @@ function useServicesAnimations() {
             ScrollTrigger.create({
               trigger: row,
               start: "top 85%",
+              once: true,
               onEnter: () => {
                 gsap.to(textBlock, { opacity: 1, y: 0, duration: 0.85, ease: "power3.out", clearProps: "all" });
                 // Stagger title → desc → tags
@@ -48,6 +49,7 @@ function useServicesAnimations() {
             ScrollTrigger.create({
               trigger: row,
               start: "top 88%",
+              once: true,
               onEnter: () =>
                 gsap.to(imgBlock, { opacity: 1, scale: 1, duration: 1.1, ease: "power3.out", clearProps: "all" }),
             })
@@ -63,6 +65,7 @@ function useServicesAnimations() {
           ScrollTrigger.create({
             trigger: addSection,
             start: "top 85%",
+            once: true,
             onEnter: async () => {
               const { animate, stagger } = await import("animejs");
               animate(addItems, {
@@ -85,6 +88,7 @@ function useServicesAnimations() {
           ScrollTrigger.create({
             trigger: addHeader,
             start: "top 88%",
+            once: true,
             onEnter: () => gsap.to(addHeader, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", clearProps: "all" }),
           })
         );
@@ -119,7 +123,7 @@ export default function Services() {
         <div className="services-page-wrapper">
           {/* SERVICE 01 */}
           <div className="sp-row" id="creative-direction">
-            <div className="sp-text-block sp-dark reveal">
+            <div className="sp-text-block sp-dark">
               <div>
                 <h3 className="sp-title">Creative Direction &amp;<br/>Concept Planning</h3>
                 <p className="sp-desc">
@@ -135,13 +139,13 @@ export default function Services() {
                 <span className="sp-tag-item">Brand Narrative Crafting</span>
               </div>
             </div>
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80')" }}></div>
           </div>
 
           {/* SERVICE 02 */}
           <div className="sp-row" id="cinematic-production">
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80')" }}></div>
-            <div className="sp-text-block sp-teal reveal">
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-text-block sp-teal">
               <div>
                 <h3 className="sp-title">Cinematic Photography<br/>&amp; Film Production</h3>
                 <p className="sp-desc">
@@ -161,7 +165,7 @@ export default function Services() {
 
           {/* SERVICE 03 */}
           <div className="sp-row" id="social-media">
-            <div className="sp-text-block sp-blue reveal">
+            <div className="sp-text-block sp-blue">
               <div>
                 <h3 className="sp-title">Social Media<br/>Content Creation</h3>
                 <p className="sp-desc">
@@ -177,13 +181,13 @@ export default function Services() {
                 <span className="sp-tag-item">Monthly Content Packages</span>
               </div>
             </div>
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80')" }}></div>
           </div>
 
           {/* SERVICE 04 */}
           <div className="sp-row" id="commercial-ads">
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&q=80')" }}></div>
-            <div className="sp-text-block sp-green reveal">
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-text-block sp-green">
               <div>
                 <h3 className="sp-title">Commercial Ads<br/>&amp; Brand Campaigns</h3>
                 <p className="sp-desc">
@@ -203,7 +207,7 @@ export default function Services() {
 
           {/* SERVICE 05 */}
           <div className="sp-row" id="influencer">
-            <div className="sp-text-block sp-dark reveal">
+            <div className="sp-text-block sp-dark">
               <div>
                 <h3 className="sp-title">Influencer &amp; Creator<br/>Collaborations</h3>
                 <p className="sp-desc">
@@ -219,13 +223,13 @@ export default function Services() {
                 <span className="sp-tag-item">Affiliate Management</span>
               </div>
             </div>
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1516245834210-c4c142787335?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1516245834210-c4c142787335?auto=format&fit=crop&q=80')" }}></div>
           </div>
 
           {/* SERVICE 06 */}
           <div className="sp-row" id="event-film">
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80')" }}></div>
-            <div className="sp-text-block sp-teal reveal">
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-text-block sp-teal">
               <div>
                 <h3 className="sp-title">Event Film &amp;<br/>Live Documentation</h3>
                 <p className="sp-desc">
@@ -245,7 +249,7 @@ export default function Services() {
 
           {/* SERVICE 07 */}
           <div className="sp-row" id="account-growth">
-            <div className="sp-text-block sp-blue reveal">
+            <div className="sp-text-block sp-blue">
               <div>
                 <h3 className="sp-title">Account Growth<br/>&amp; Performance Management</h3>
                 <p className="sp-desc">
@@ -261,13 +265,13 @@ export default function Services() {
                 <span className="sp-tag-item">Monthly Performance Reviews</span>
               </div>
             </div>
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80')" }}></div>
           </div>
 
           {/* SERVICE 08 */}
           <div className="sp-row" id="concert-live">
-            <div className="sp-img-block reveal" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540039155733-d76e6d482b58?auto=format&fit=crop&q=80')" }}></div>
-            <div className="sp-text-block sp-green reveal">
+            <div className="sp-img-block" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540039155733-d76e6d482b58?auto=format&fit=crop&q=80')" }}></div>
+            <div className="sp-text-block sp-green">
               <div>
                 <h3 className="sp-title">Concert &amp;<br/>Live Production</h3>
                 <p className="sp-desc">
@@ -289,7 +293,7 @@ export default function Services() {
       </section>
 
       {/* ADDITIVE SERVICES */}
-      <section className="additive-services-page reveal" id="additive-services">
+      <section className="additive-services-page" id="additive-services">
         <h2 className="additive-pg-header">Additive Services</h2>
         <div className="add-pg-list">
           <div className="add-pg-item">Motion Graphics & Visual Effects</div>
